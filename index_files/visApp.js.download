@@ -1,0 +1,263 @@
+var visApp =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js/visApp.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./src/js/modules/vi.js":
+/*!******************************!*\
+  !*** ./src/js/modules/vi.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var viApp = exports.viApp = function viApp() {
+
+  var cookieVis = getCookieValue('vis'),
+      cookieFontSize = getCookieValue('ViFontSize'),
+      cookieLineHeight = getCookieValue('ViLineHeight'),
+      cookieColorState = getCookieValue('ViColorState'),
+      fontSize = cookieFontSize != false ? parseInt(cookieFontSize) : 1,
+      lineHeight = cookieLineHeight != false ? parseInt(cookieLineHeight) : 1;
+
+  if (cookieVis == 'Y') {
+    $('html').addClass('is-font-size-1 is-line-height-1');
+  }
+
+  if (cookieColorState != false) {
+    //modifySvg(cookieColorState);
+  }
+
+  $(document).on('click', '.js-reset-vi', function (e) {
+    e.preventDefault();
+    document.cookie = "vis = N; path=/;";
+    window.location.href = $(this).attr('href');
+  });
+
+  $(document).on('click', '.js-set-vi', function (e) {
+    e.preventDefault();
+    document.cookie = "vis = Y; path=/;";
+    window.location.href = $(this).attr('href');
+  });
+
+  $(document).on('click', '.visual-controls__buttons > .btn', function (e) {
+    e.preventDefault();
+    var action = $(this).data('action'),
+        value = $(this).data('value'),
+        isDisabled = void 0;
+
+    switch (action) {
+      case 'increaseFontSize':
+        fontSize = detectMinMax(fontSize + 1);
+        isDisabled = fontSize === 3 ? true : false;
+        $(this).prop('disabled', isDisabled);
+        $(this).siblings('.btn').prop('disabled', false);
+        $('html').attr('class', function (i, c) {
+          return c.replace(/(^|\s)is-font-size-\S+/g, ' is-font-size-' + fontSize + ' ');
+        });
+        document.cookie = "ViFontSize = " + fontSize + "; path=/;";
+        break;
+      case 'reduceFontSize':
+        fontSize = detectMinMax(fontSize - 1);
+        isDisabled = fontSize === 1 ? true : false;
+        $(this).prop('disabled', isDisabled);
+        $(this).siblings('.btn').prop('disabled', false);
+        $('html').attr('class', function (i, c) {
+          return c.replace(/(^|\s)is-font-size-\S+/g, ' is-font-size-' + fontSize + ' ');
+        });
+        document.cookie = "ViFontSize = " + fontSize + "; path=/;";
+        break;
+      case 'increaseLineHeight':
+        lineHeight = detectMinMax(lineHeight + 1);
+        isDisabled = lineHeight === 3 ? true : false;
+        $(this).prop('disabled', isDisabled);
+        $(this).siblings('.btn').prop('disabled', false);
+        $('html').attr('class', function (i, c) {
+          return c.replace(/(^|\s)is-line-height-\S+/g, ' is-line-height-' + lineHeight + ' ');
+        });
+        document.cookie = "ViLineHeight = " + lineHeight + "; path=/;";
+        break;
+      case 'reduceLineHeight':
+        lineHeight = detectMinMax(lineHeight - 1);
+        isDisabled = lineHeight === 1 ? true : false;
+        $(this).prop('disabled', isDisabled);
+        $(this).siblings('.btn').prop('disabled', false);
+        $('html').attr('class', function (i, c) {
+          return c.replace(/(^|\s)is-line-height-\S+/g, ' is-line-height-' + lineHeight + ' ');
+        });
+        document.cookie = "ViLineHeight = " + lineHeight + "; path=/;";
+        break;
+      case 'changeColorState':
+        $(this).prop('disabled', true);
+        $(this).siblings('.btn').prop('disabled', false);
+        $('html').removeClass('is-black is-blue').addClass(value);
+        //modifySvg(value);
+        document.cookie = "ViColorState = " + value + "; path=/;";
+        break;
+      case 'changePictureState':
+        $(this).prop('disabled', true);
+        $(this).siblings('.btn').prop('disabled', false);
+        $('html').removeClass('is-images-off is-images-opposite').addClass(value);
+        document.cookie = "ViPictureState = " + value + "; path=/;";
+        break;
+    }
+  });
+
+  function detectMinMax(value) {
+    if (value <= 1) {
+      return 1;
+    } else if (value === 2) {
+      return 2;
+    } else if (value >= 3) {
+      return 3;
+    }
+  }
+
+  function getCookieValue(a) {
+    var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
+    return b ? b.pop() : false;
+  }
+
+  function modifySvg(value) {
+
+    $('use').each(function () {
+      var defaultSpriteLink = $(this).attr('xlink:href');
+      var modifiedSpriteLink = void 0;
+      modifiedSpriteLink = defaultSpriteLink.replace('color-svg-spriteis-black', 'color-svg-sprite');
+      modifiedSpriteLink = modifiedSpriteLink.replace('color-svg-spriteis-blue', 'color-svg-sprite');
+      modifiedSpriteLink = modifiedSpriteLink.replace('color-svg-sprite', 'color-svg-sprite' + value);
+      $(this).attr('xlink:href', modifiedSpriteLink);
+    });
+    if (value.length > 0) {
+
+      var color = value === 'is-blue' ? '#ffe00f' : '#ffffff';
+
+      $('.svg-icon').each(function () {
+
+        $(this).find('path').each(function () {
+
+          if ($(this).attr('fill') != 'none') {
+            $(this).addClass('svg--filled');
+          }
+
+          if ($(this).attr('stroke') != 'none') {
+            $(this).addClass('svg--stroked');
+          }
+        });
+      });
+    }
+  }
+};
+
+/***/ }),
+
+/***/ "./src/js/visApp.js":
+/*!**************************!*\
+  !*** ./src/js/visApp.js ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _vi = __webpack_require__(/*! ./modules/vi */ "./src/js/modules/vi.js");
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  (0, _vi.viApp)();
+});
+
+/***/ })
+
+/******/ });
+//# sourceMappingURL=visApp.js.map

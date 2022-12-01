@@ -1,0 +1,847 @@
+var protection =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/js";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./src/js/general/check-type.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+// checkType - ver. 1.0.1
+
+/*
+  
+  Description
+  - - - - - -
+  Функция проверки типа переменной. В функцию передается переменная и тип на который её нужно проверить.
+  В зависимости от проверки вернет true или false.
+
+*/
+
+var checkType = exports.checkType = function checkType($var, $type) {
+
+  if ($type == "string" || $type == "function" || $type == "object" || $type == "boolean") {
+
+    if ($var && (typeof $var === "undefined" ? "undefined" : _typeof($var)) === $type) {
+
+      return true;
+    } else {
+
+      return false;
+    }
+  } else if ($type == "number") {
+
+    if (typeof $var === "number" && ($var <= 0 || $var >= 0)) {
+
+      return true;
+    } else {
+
+      return false;
+    }
+  } else if ($type == "array") {
+
+    if ($var && Array.isArray($var)) {
+
+      return true;
+    } else {
+
+      return false;
+    }
+  }
+};
+
+/***/ }),
+
+/***/ "./src/js/general/find-current-parent.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.findCurrentParent = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; // findCurrentParent - ver. 1.0.2
+
+/*
+
+  Description
+  - - - - - -
+  Функция нахождения родительского элемента по классу.
+  Будет искать родителя до тех пор, пока не дойдет то документа, если найдет родителя, то вернет его, если нет, то вернет false
+
+  Параметры:
+    1. elem (object) (обязательный) - элемент от которого будет происходить поиск родителя
+    2. parentClass (string) (обязательный) - класс родителя, по которому будет идти поиск
+
+*/
+
+var _checkType = __webpack_require__("./src/js/general/check-type.js");
+
+var findCurrentParent = exports.findCurrentParent = function findCurrentParent(elem, parentClass) {
+
+  if ((0, _checkType.checkType)(elem, "object") && (0, _checkType.checkType)(parentClass, "string")) {
+
+    var parent = elem.parentNode;
+
+    if (parent != document) {
+
+      // Поиск родителя до тех пор пока не найдется элемент с нужным классом.
+      while ((typeof parent === "undefined" ? "undefined" : _typeof(parent)) === "object" && !parent.classList.contains(parentClass)) {
+
+        parent = parent.parentNode;
+
+        if (parent == document) {
+
+          parent = null;
+          break;
+        }
+      }
+    } else {
+
+      parent = null;
+    }
+
+    if (parent != null) {
+
+      return parent;
+    } else {
+
+      return false;
+    }
+  }
+};
+
+/***/ }),
+
+/***/ "./src/js/general/find.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.findElemsTags = exports.findFirstTag = exports.findElemsTag = exports.findElemsClasses = exports.findFirstClass = exports.findElemsClass = undefined;
+
+var _checkType = __webpack_require__("./src/js/general/check-type.js");
+
+// findElemsClass - ver. 1.0.3
+
+/*
+
+  Description
+  - - - - - -
+  Функция нахождения элементов на странице по классу.
+  Если хоть один элемент будет найден, то вернется массив с ним, если нет, то ничего
+
+  Принимает параметры:
+    1. elemsClass (string) (обязательный) - класс элементов, по которому будет идти поиск
+    2. lookPlace (object) (обязательный) - элемент, в котором будет происходить поиск
+
+*/
+
+var findElemsClass = exports.findElemsClass = function findElemsClass(elemsClass, lookPlace) {
+
+  if ((0, _checkType.checkType)(elemsClass, "string") && (0, _checkType.checkType)(lookPlace, "object")) {
+
+    var array = lookPlace.getElementsByClassName(elemsClass);
+
+    if (array.length > 0) {
+
+      return Array.prototype.slice.call(array);
+    }
+  }
+};
+
+// findFirstClass - ver. 1.0.3
+
+/*
+
+  Description
+  - - - - - -
+  Функция нахождения первого элемента на странице по классу. Реализована для замены использования id.
+  Если элемент будет найден, то функция вернет его
+
+  Принимает параметры:
+    1. elemClass (string) (обязательный) - класс элемента, по которому будет идти поиск
+    2. lookPlace (object) (обязательный) - элемент, в котором будет происходить поиск
+
+*/
+
+// global ver. 1.0.1
+
+var findFirstClass = exports.findFirstClass = function findFirstClass(elemClass, lookPlace) {
+
+  if ((0, _checkType.checkType)(elemClass, "string") && (0, _checkType.checkType)(lookPlace, "object")) {
+
+    var elem = lookPlace.getElementsByClassName(elemClass)[0];
+
+    if (elem) {
+
+      return elem;
+    }
+  }
+};
+
+// findElemsClasses - ver. 1.0.3
+
+/*
+
+  Description
+  - - - - - -
+  Функция нахождения элементов сразу по нескольким классам.
+  Если хоть один элемент будет найден, то функция вернет массив с отдельными массивами для каждого класса элементами
+
+  Принимает параметры:
+    1. elemsClasses (array) (обязательный) - массив, с классами элементов
+    2. lookPlace (object) (обязательный) - элемент, в котором будет происходить поиск
+
+*/
+
+var findElemsClasses = exports.findElemsClasses = function findElemsClasses(elemsClassesArray, lookPlace) {
+
+  if ((0, _checkType.checkType)(elemsClassesArray, "array") && (0, _checkType.checkType)(lookPlace, "object")) {
+
+    var array = [];
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = elemsClassesArray[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var item = _step.value;
+
+
+        if ((0, _checkType.checkType)(item, "string")) {
+
+          var arrayClass = lookPlace.getElementsByClassName(item);
+
+          if (arrayClass.length > 0) {
+
+            array.push(Array.prototype.slice.call(arrayClass));
+          }
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    if (array.length > 0) {
+
+      return array;
+    }
+  }
+};
+
+// findElemsTag - ver. 1.0.3
+
+/*
+
+  Description
+  - - - - - -
+  Функция нахождения элементов на странице по тегу.
+  Если хоть один элемент будет найден, то вернется массив с ним, если нет, то ничего
+
+  Принимает параметры:
+    1. elemsTag (string) (обязательный) - тег элементов, по которому будет идти поиск
+    2. lookPlace (object) (обязательный) - элемент, в котором будет происходить поиск
+
+*/
+
+var findElemsTag = exports.findElemsTag = function findElemsTag(elemsTag, lookPlace) {
+
+  if ((0, _checkType.checkType)(elemsTag, "string") && (0, _checkType.checkType)(lookPlace, "object")) {
+
+    var array = lookPlace.getElementsByTagName(elemsTag);
+
+    if (array.length > 0) {
+
+      return Array.prototype.slice.call(array);
+    }
+  }
+};
+
+// findFirstTag - ver. 1.0.3
+
+/*
+
+  Description
+  - - - - - -
+  Функция нахождения первого элемента на странице по тегу. Реализована для замены использования id.
+  Если элемент будет найден, то функция вернет его
+
+  Принимает параметры:
+    1. elemTag (string) (обязательный) - тег элемента, по которому будет идти поиск
+    2. lookPlace (object) (обязательный) - элемент, в котором будет происходить поиск
+
+*/
+
+var findFirstTag = exports.findFirstTag = function findFirstTag(elemTag, lookPlace) {
+
+  if ((0, _checkType.checkType)(elemTag, "string") && (0, _checkType.checkType)(lookPlace, "object")) {
+
+    var elem = lookPlace.getElementsByTagName(elemTag)[0];
+
+    if (elem) {
+
+      return elem;
+    }
+  }
+};
+
+// findElemsTags - ver. 1.0.3
+
+/*
+
+  Description
+  - - - - - -
+  Функция нахождения элементов сразу по нескольким тегам.
+  Если хоть один элемент будет найден, то функция вернет массив с отдельными массивами для каждого тега элементами
+
+  Принимает параметры:
+    1. elemsTagsArray (array) (обязательный) - массив, с тегами элементов
+    2. lookPlace (object) (обязательный) - элемент, в котором будет происходить поиск
+
+*/
+
+var findElemsTags = exports.findElemsTags = function findElemsTags(elemsTagsArray, lookPlace) {
+
+  if ((0, _checkType.checkType)(elemsTagsArray, "array") && (0, _checkType.checkType)(lookPlace, "object")) {
+
+    var array = [];
+
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
+
+    try {
+      for (var _iterator2 = elemsTagsArray[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var item = _step2.value;
+
+
+        if ((0, _checkType.checkType)(item, "string")) {
+
+          var arrayTag = lookPlace.getElementsByTagName(item);
+
+          if (arrayTag.length > 0) {
+
+            array.push(Array.prototype.slice.call(arrayTag));
+          }
+        }
+      }
+    } catch (err) {
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+          _iterator2.return();
+        }
+      } finally {
+        if (_didIteratorError2) {
+          throw _iteratorError2;
+        }
+      }
+    }
+
+    if (array.length > 0) {
+
+      return array;
+    }
+  }
+};
+
+/***/ }),
+
+/***/ "./src/js/general/state-classes.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var activeClass = "is-active";
+var successClass = "is-success";
+var errorClass = "is-error";
+var onClass = "is-on";
+var offClass = "is-off";
+var moveClass = "is-move";
+var openClass = "is-open";
+var closeClass = "is-close";
+var hoverClass = "is-hover";
+var hideClass = "is-hide";
+var lockClass = "is-lock";
+var fixClass = "is-fix";
+var disabledClass = "is-disabled";
+
+var stateClasses = {
+	active: activeClass,
+	success: successClass,
+	error: errorClass,
+	on: onClass,
+	off: offClass,
+	move: moveClass,
+	open: openClass,
+	close: closeClass,
+	hover: hoverClass,
+	hide: hideClass,
+	lock: lockClass,
+	fix: fixClass,
+	disabled: disabledClass
+};
+
+exports.activeClass = activeClass;
+exports.successClass = successClass;
+exports.errorClass = errorClass;
+exports.onClass = onClass;
+exports.offClass = offClass;
+exports.moveClass = moveClass;
+exports.openClass = openClass;
+exports.closeClass = closeClass;
+exports.hoverClass = hoverClass;
+exports.hideClass = hideClass;
+exports.lockClass = lockClass;
+exports.fixClass = fixClass;
+exports.disabledClass = disabledClass;
+exports.stateClasses = stateClasses;
+
+/***/ }),
+
+/***/ "./src/js/modules/life-story-slider.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.lifeStorySlider = undefined;
+
+var _find = __webpack_require__("./src/js/general/find.js");
+
+var lifeStorySlider = exports.lifeStorySlider = function lifeStorySlider() {
+	var name = "js-life-story-slider";
+	var classes = {
+		block: name + "-block",
+		slider: name,
+		wrapper: name + "-wrapper",
+		slide: name + "-slide",
+		nav: name + "-nav",
+		pagination: name + "-pagination",
+		prev: "js-prev",
+		next: "js-next",
+		style: {
+			bullet: "slider-pagination__item"
+		}
+	};
+	var elems = {
+		blocks: (0, _find.findElemsClass)(classes.block, document)
+	};
+
+	if (!elems.blocks) {
+		return false;
+	}
+
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
+
+	try {
+		for (var _iterator = elems.blocks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			var block = _step.value;
+
+
+			var slider = (0, _find.findFirstClass)(classes.slider, block);
+			var nav = (0, _find.findFirstClass)(classes.nav, block);
+			var pagination = (0, _find.findFirstClass)(classes.pagination, block);
+
+			if (!slider || !nav || !pagination) {
+				return false;
+			}
+
+			new Swiper(slider, {
+				grabCursor: true,
+				loop: true,
+				wrapperClass: classes.wrapper,
+				slideClass: classes.slide,
+				navigation: {
+					prevEl: (0, _find.findFirstClass)(classes.prev, nav),
+					nextEl: (0, _find.findFirstClass)(classes.next, nav)
+				},
+				pagination: {
+					el: pagination,
+					type: 'fraction',
+					clickable: true
+				}
+			});
+		}
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
+		try {
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
+			}
+		} finally {
+			if (_didIteratorError) {
+				throw _iteratorError;
+			}
+		}
+	}
+};
+
+/***/ }),
+
+/***/ "./src/js/modules/nav-menu.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.navMenu = undefined;
+
+var _find = __webpack_require__("./src/js/general/find.js");
+
+var _findCurrentParent = __webpack_require__("./src/js/general/find-current-parent.js");
+
+var _checkType = __webpack_require__("./src/js/general/check-type.js");
+
+var _stateClasses = __webpack_require__("./src/js/general/state-classes.js");
+
+var navMenu = exports.navMenu = function navMenu() {
+
+    var classes = {
+        block: "js-nav-menu-block",
+        menu: "js-nav-menu",
+        btn: "js-nav-menu-btn"
+    };
+    var elems = {
+        blocks: (0, _find.findElemsClass)(classes.block, document),
+        menus: (0, _find.findElemsClass)(classes.menu, document),
+        btns: (0, _find.findElemsClass)(classes.btn, document)
+    };
+    var funcs = {
+        open: function open(btn) {
+
+            var block = (0, _findCurrentParent.findCurrentParent)(btn, classes.block);
+            var menu = (0, _find.findFirstClass)(classes.menu, block);
+
+            menu.classList.add(_stateClasses.openClass);
+
+            if ((0, _checkType.checkType)(btn, "object")) {
+                btn.classList.add(_stateClasses.activeClass);
+            }
+        },
+        close: function close() {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+
+                for (var _iterator = elems.menus[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var menu = _step.value;
+
+                    menu.classList.remove(_stateClasses.openClass);
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = elems.btns[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var btn = _step2.value;
+
+                    btn.classList.remove(_stateClasses.activeClass);
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+        }
+    };
+
+    if (!elems.blocks || !elems.menus || !elems.btns) {
+        return false;
+    }
+
+    document.addEventListener("click", function (e) {
+
+        var elem = e.target;
+
+        if (elem.classList.contains(classes.btn)) {
+
+            var block = (0, _findCurrentParent.findCurrentParent)(elem, classes.block);
+            var menu = (0, _find.findFirstClass)(classes.menu, block);
+
+            if (menu.classList.contains(_stateClasses.openClass)) {
+                funcs.close();
+            } else {
+                funcs.open(elem);
+            }
+        } else {
+
+            var btn = (0, _findCurrentParent.findCurrentParent)(elem, classes.btn);
+            var _menu = (0, _findCurrentParent.findCurrentParent)(elem, classes.menu);
+
+            if (btn) {
+
+                var _block = (0, _findCurrentParent.findCurrentParent)(btn, classes.block);
+                var _menu2 = (0, _find.findFirstClass)(classes.menu, _block);
+
+                if (_menu2.classList.contains(_stateClasses.openClass)) {
+                    funcs.close();
+                } else {
+                    funcs.open(btn);
+                }
+            }
+
+            if (!_menu && !btn) {
+                funcs.close();
+            }
+        }
+    });
+};
+
+/***/ }),
+
+/***/ "./src/js/modules/tiles-slider.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.tilesSlider = undefined;
+
+var _find = __webpack_require__("./src/js/general/find.js");
+
+var tilesSlider = exports.tilesSlider = function tilesSlider() {
+
+	var name = "js-tiles-slider";
+	var classes = {
+		block: name + "-block",
+		slider: name,
+		wrapper: name + "-wrapper",
+		slide: name + "-slide"
+	};
+	var elems = {
+		blocks: (0, _find.findElemsClass)(classes.block, document)
+	};
+
+	if (!elems.blocks) {
+		return false;
+	}
+
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
+
+	try {
+		for (var _iterator = elems.blocks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			var block = _step.value;
+
+
+			var slider = (0, _find.findFirstClass)(classes.slider, block);
+
+			if (!slider) {
+				return false;
+			}
+
+			new Swiper(slider, {
+				slidesPerView: 'auto',
+				wrapperClass: classes.wrapper,
+				slideClass: classes.slide,
+				touchReleaseOnEdges: true,
+				freeModeMomentumBounce: false
+			});
+		}
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
+		try {
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
+			}
+		} finally {
+			if (_didIteratorError) {
+				throw _iteratorError;
+			}
+		}
+	}
+};
+
+/***/ }),
+
+/***/ "./src/js/protection.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _navMenu = __webpack_require__("./src/js/modules/nav-menu.js");
+
+var _tilesSlider = __webpack_require__("./src/js/modules/tiles-slider.js");
+
+var _lifeStorySlider = __webpack_require__("./src/js/modules/life-story-slider.js");
+
+document.addEventListener("DOMContentLoaded", function () {
+	(0, _tilesSlider.tilesSlider)();
+	(0, _lifeStorySlider.lifeStorySlider)();
+});
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("./src/js/protection.js");
+
+
+/***/ })
+
+/******/ });
+//# sourceMappingURL=protection.js.map

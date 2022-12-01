@@ -1,0 +1,26 @@
+$(document).ready(function () {
+    $("#news-readed").change(function () {
+        $.get('/ajax/set_as_read.php', {'element_id': $(this).data('id')})
+    });
+
+    $("input.is-address-field").suggestions({
+        token: DADATA_TOKEN,
+        type: "ADDRESS",
+        count: 5,
+        /* Вызывается, когда пользователь выбирает одну из подсказок */
+        onSelect: function(suggestion) {
+            try {
+                $(this).parents("form").find("input.is-zip-code-field").val(suggestion.data.postal_code);
+            } catch (_) {}
+            console.log(suggestion);
+        }
+    });
+
+    $("input.is-city-field").suggestions({
+        token: DADATA_TOKEN,
+        type: "ADDRESS",
+        count: 5,
+        bounds: "city-settlement"
+    });
+
+});

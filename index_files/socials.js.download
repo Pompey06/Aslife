@@ -1,0 +1,23 @@
+$(document).ready(function () {
+    $(".social_buttons a").click(function (e) {
+        let showPopup = function (url) {
+            window.open(url, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');
+        };
+        if ($(this).hasClass("fb")) {
+            e.preventDefault();
+            showPopup("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(document.location.href));
+        } else if ($(this).hasClass("vk")) {
+            e.preventDefault();
+            showPopup("https://vk.com/share.php?url=" + encodeURIComponent(document.location.href));
+        } else if ($(this).hasClass("tw")) {
+            e.preventDefault();
+            showPopup("https://twitter.com/share?url=" + encodeURIComponent(document.location.href));
+        } else if ($(this).hasClass("ok")) {
+            e.preventDefault();
+            showPopup("https://connect.ok.ru/offer?url=" + encodeURIComponent(document.location.href));
+        } else if ($(this).hasClass("gp")) {
+            e.preventDefault();
+            showPopup("https://plus.google.com/share?url=" + encodeURIComponent(document.location.href));
+        }
+    });
+});
